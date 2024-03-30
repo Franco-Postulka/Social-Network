@@ -1,0 +1,66 @@
+body{
+    background-color: #1a172a;
+    color: white;
+}
+.navbar{
+    background-color: #0d0c16;
+}
+.mid_section{
+    padding: 25px;
+}
+#new_post{
+    border: 1px solid white;
+    padding: 15px;
+}
+form textarea{
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 5px;
+    field-sizing: content;
+    max-height: 120px;
+    min-height: 60px;
+}
+
+#submit{
+    font-size: 20px;
+    color: white;
+    background-color: blue;
+    border: 1px solid blue;
+    border-radius: 10%;
+}
+
+.post{
+    padding: 15px;
+    border: 1px solid white;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+}  
+.post div{
+    display: flex;
+    margin: 5px;
+    justify-content: space-between;
+}
+#no_post{
+    padding: 15px;
+    border: 1px solid white;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+a:hover{
+    text-decoration:none;
+}
+
+#presentation{
+    display: flex;
+    flex-direction: column;
+}
+#follow_information{
+    display: flex;
+    margin: 0 auto;
+}
+#username{
+    font-size: 35px;
+    margin: 0 auto;
+}
