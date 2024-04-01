@@ -1,15 +1,19 @@
 {% extends "network/layout.html" %}
-
+{% load static %}
 {% block body %}
+
+<p id="hidden-element" style="display: none;">{{logged_user}}</p>
 <div class="mid_section">
     <div id="presentation">
         <strong id="username">@{{username}}</strong>
-        <div id="follow_information">
-            <p>Followers <strong>{{followers}}</strong></p>
+        <div class="follow_information">
+            <p>Followers <strong id="followers">{{followers}}</strong></p>
             &emsp;
-            <p>Following <strong>{{following}}</strong></p>
+            <p>Following <strong id="following">{{following}}</strong></p>
         </div>
-        
+        <div class="follow_information">
+            <button id="follow_buttom"></button>
+        </div>
     </div>
     {% if posts %}
         {% for post in posts %}
@@ -35,4 +39,6 @@
         </div>
     {% endif %}
 </div>
+<script src="{% static 'network/profile.js' %}"></script>
+
 {% endblock %}

@@ -1,18 +1,7 @@
-{% extends "network/layout.html" %}
-
-{% block body %}
+{% extends "network/layout.html"%}
+{% block body%}
 <div class="mid_section">
-    <h1>All Posts</h1>
-    <div id="new_post">
-        <h3>New Post</h3>
-        <div>
-            <form action="{% url 'post' %}" method="POST">
-                {% csrf_token %}
-                <textarea name="text" id="textarea" required></textarea>
-                <input type="submit" value="Post" id="submit">
-            </form>
-        </div>
-    </div>
+    <h1>Following</h1>
     {% if posts %}
         {% for post in posts %}
             <div class="post">
@@ -36,8 +25,6 @@
             <strong>No posts so far</strong>
         </div>
     {% endif %}
-
-
 
 </div>
 {% endblock %}
