@@ -12,7 +12,7 @@ from .models import User, Post, Profile
 
 def index(request):
     posts = Post.objects.all().order_by('-date')
-    paginator = Paginator(posts,2)
+    paginator = Paginator(posts,10)
     page_number = request.GET.get('page') 
     posts = paginator.get_page(page_number)
     return render(request, "network/index.html",{'posts':posts})
