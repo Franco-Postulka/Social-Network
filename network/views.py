@@ -88,6 +88,9 @@ def profile(request, username):
     follwing = Profile.objects.filter(follower=user.pk).count()
     followers = Profile.objects.filter(user=user.pk).count()
     posts = Post.objects.filter(user=user).order_by('-date')
+    paginator = Paginator(posts,10)
+    page_number = request.GET.get('page') 
+    posts = paginator.get_page(page_number)
     return render(request, "network/profile.html", {'username':user,'followers':followers,'following':follwing,'posts':posts, 'logged_user':request.user})
 
 
@@ -148,6 +151,9 @@ def following(request):
             following_users.append(following_profile.user)
 
         posts = Post.objects.filter(user__in=following_users).order_by('-date')
+        paginator = Paginator(posts,10)
+        page_number = request.GET.get('page') 
+        posts = paginator.get_page(page_number)
         return render(request,'network/following.html',{'posts':posts})
     else:
         return HttpResponseRedirect(reverse('login'))
