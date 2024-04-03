@@ -1,5 +1,5 @@
 {% extends "network/layout.html" %}
-
+{% load static %}
 {% block body %}
 <div class="mid_section">
     <h1>All Posts</h1>
@@ -8,7 +8,7 @@
         <div>
             <form action="{% url 'post' %}" method="POST">
                 {% csrf_token %}
-                <textarea name="text" id="textarea" required></textarea>
+                <textarea name="text" class="textarea" required></textarea>
                 <input type="submit" value="Post" id="submit">
             </form>
         </div>
@@ -17,12 +17,24 @@
         {% for post in posts %}
             <div class="post">
                 <div class="top">
-                    <a href="{% url 'profile' username=post.user %}" >@{{ post.user }}</a>
+                    <div>
+                        <a href="{% url 'profile' username=post.user %}" >@{{ post.user }}</a>
+                        {% if post.user == request.user %}
+                            <button class="edit_buttom" id="{{post.pk}}" onclick="edit('{{post.pk}}')">Edit</button>
+                        {% endif %}
+                    </div>
                     <p>{{ post.date }}</p>
                 </div>
                 <div>
-                    <p>{{ post.text }}</p>
+                    <p id="Paragraph{{post.pk}}">{{ post.text }}</p>
                 </div>
+                {% if post.user == request.user %}
+                    <div class="edit_form">
+                        <form action="">
+                            <textarea class="textarea" id="Textarea{{post.pk}}" style="display: none;"></textarea>
+                        </form>
+                    </div>
+                {% endif %}
                 <div>
                     <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                         <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
@@ -54,7 +66,8 @@
         </div>
     {% endif %}
 
-
-
+    
 </div>
+
+<script src="{% static 'network/index.js' %}"></script>
 {% endblock %}

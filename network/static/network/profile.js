@@ -4,9 +4,6 @@ document.addEventListener('DOMContentLoaded',function(){
     let username = document.querySelector('#username').innerHTML
     username = username.slice(1,username.length)
 
-    console.log(`Usuario del perfil: ${username}`)
-    console.log(`Usuario loggeado: ${logged_user}`)
-
     if (logged_user === username) {
         buttom.style.display = 'none';  
     }
@@ -21,7 +18,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 buttom.innerHTML = 'Unfollow'
             }else if(result.message === false){
                 buttom.innerHTML = 'Follow';
-            }e
+            }
         })
     }
 
@@ -49,12 +46,5 @@ document.addEventListener('DOMContentLoaded',function(){
                 'user_profile':username
             })
         })
-        // .then(response =>{
-        //     if(response.state === false){
-        //         buttom.innerHTML === 'Follow'
-        //     }else if(response.state === true){
-        //         buttom.innerHTML === 'Unfollow'
-        //     }
-        // })
     }
 })

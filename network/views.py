@@ -94,6 +94,25 @@ def profile(request, username):
     return render(request, "network/profile.html", {'username':user,'followers':followers,'following':follwing,'posts':posts, 'logged_user':request.user})
 
 
+
+
+def following(request):
+    if request.user.is_authenticated:
+        following_users = []
+        following_profiles = Profile.objects.filter(follower=request.user.pk)
+
+        for following_profile in following_profiles:
+            following_users.append(following_profile.user)
+
+        posts = Post.objects.filter(user__in=following_users).order_by('-date')
+        paginator = Paginator(posts,10)
+        page_number = request.GET.get('page') 
+        posts = paginator.get_page(page_number)
+        return render(request,'network/following.html',{'posts':posts})
+    else:
+        return HttpResponseRedirect(reverse('login'))
+    
+
 def follow(request):
     if request.method == 'GET':
         logged_user = request.GET.get('logged_user')
@@ -139,21 +158,22 @@ def change_follow(request):
         except User.DoesNotExist:
             return JsonResponse({'error':'User not found'},status=404)
     else:
-        return JsonResponse({'error','PUT request required'}, status=400)
+        return HttpResponseRedirect(reverse('index'))
 
 
-def following(request):
-    if request.user.is_authenticated:
-        following_users = []
-        following_profiles = Profile.objects.filter(follower=request.user.pk)
+@csrf_exempt
+def edit(request):
+    if request.method == 'PUT':
+        data = json.loads(request.body)
+        paragraph = data.get('paragraph')
+        post_id = data.get('post_id')
 
-        for following_profile in following_profiles:
-            following_users.append(following_profile.user)
-
-        posts = Post.objects.filter(user__in=following_users).order_by('-date')
-        paginator = Paginator(posts,10)
-        page_number = request.GET.get('page') 
-        posts = paginator.get_page(page_number)
-        return render(request,'network/following.html',{'posts':posts})
+        try:
+            post = Post.objects.get(pk=post_id)
+            post.text= paragraph
+            post.save()
+            return JsonResponse({'edited':'Post edited correctly'},status=200)
+        except Post.DoesNotExist:
+            return JsonResponse({'error':'Post not found'},status=404)
     else:
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('index'))

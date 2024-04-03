@@ -13,5 +13,6 @@ urlpatterns = [
 
     # Apis
     path("follow", views.follow, name='follow'),
-    path("change_follow",views.change_follow,name='change_follow')
+    path("change_follow",views.change_follow,name='change_follow'),
+    path("edit",views.edit,name='edit')
 ]
