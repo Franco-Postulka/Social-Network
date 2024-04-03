@@ -11,11 +11,18 @@ from .models import User, Post, Profile
 
 
 def index(request):
+    print(request.user.pk)
     posts = Post.objects.all().order_by('-date')
     paginator = Paginator(posts,10)
     page_number = request.GET.get('page') 
     posts = paginator.get_page(page_number)
-    return render(request, "network/index.html",{'posts':posts})
+    logged_user = request.user
+    if request.user.is_authenticated:
+        liked_post_ids = Post.objects.filter(likes=logged_user).values_list('id', flat=True)
+    else:
+        liked_post_ids = []
+
+    return render(request, "network/index.html",{'posts':posts,'logged_user':logged_user,'liked_post_ids':liked_post_ids})
 
 
 def login_view(request):
@@ -108,7 +115,7 @@ def following(request):
         paginator = Paginator(posts,10)
         page_number = request.GET.get('page') 
         posts = paginator.get_page(page_number)
-        return render(request,'network/following.html',{'posts':posts})
+        return render(request,'network/following.html',{'posts':posts,'logged_user':request.user})
     else:
         return HttpResponseRedirect(reverse('login'))
     
@@ -175,5 +182,29 @@ def edit(request):
             return JsonResponse({'edited':'Post edited correctly'},status=200)
         except Post.DoesNotExist:
             return JsonResponse({'error':'Post not found'},status=404)
+    else:
+        return HttpResponseRedirect(reverse('index'))
+    
+
+@csrf_exempt
+def like(request):
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        post_id = data.get('post_id')
+        like_or_unlike = data.get('like_or_unlike')
+        try:
+            post = Post.objects.get(pk=post_id)
+            user = User.objects.get(pk=request.user.pk)
+            if like_or_unlike == 'like':
+                post.likes.add(user) 
+                post.save() 
+                return JsonResponse({'success': 'Like removed successfully'})
+            elif like_or_unlike == 'unlike':
+                post.likes.remove(user)
+                return JsonResponse({'success': 'Like added successfully'})
+        except Post.DoesNotExist:
+            return JsonResponse({'error': 'Post not found'}, status=404)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
     else:
         return HttpResponseRedirect(reverse('index'))

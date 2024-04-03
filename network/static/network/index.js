@@ -33,3 +33,56 @@ function edit(post_pk) {
         })
     }
 }
+
+function like(post_pk, like_or_unlike){
+    const like_button = document.getElementById(`like_post${post_pk}`)
+    const unlike_button = document.getElementById(`unlike_post${post_pk}`)
+    let likes = parseInt(like_button.querySelector('span').innerHTML)
+    const logged_user = document.getElementById('hidden-element').innerHTML
+
+    if (logged_user === 'AnonymousUser'){
+        window.location.href = '/login';
+    }else if (like_or_unlike === 'like'){
+        fetch('/like',{
+            method:'PUT',
+            body: JSON.stringify({
+                post_id:post_pk,
+                like_or_unlike:like_or_unlike,
+            })
+        })
+        .then(response => response.json())
+        .then(result =>{
+            if (result.success){
+                likes ++;
+        
+                unlike_button.querySelector('span').innerHTML = likes
+                like_button.querySelector('span').innerHTML = likes
+        
+                like_button.style.display = 'none';
+                unlike_button.style.display= 'block';
+            }
+        })
+
+    }else if (like_or_unlike === 'unlike'){
+        fetch('/like',{
+            method:'PUT',
+            body: JSON.stringify({
+                post_id:post_pk,
+                like_or_unlike:like_or_unlike,
+            })
+        })
+        .then(response => response.json())
+        .then(result =>{
+            if (result.success){
+                likes --;
+        
+                like_button.querySelector('span').innerHTML = likes
+                unlike_button.querySelector('span').innerHTML = likes
+        
+                unlike_button.style.display= 'none';
+                like_button.style.display = 'block';
+            }
+        })
+    }
+}
+

@@ -96,3 +96,26 @@ a:hover{
 .edit_form form{
     width: 100%;
 }
+button:focus {
+    outline: none;
+}
+
+.like-button{
+    padding: 0;
+    border: none;
+    background-color: #1a172a;
+    color: #007bff;
+    margin-top: 0;
+}
+.like-button:hover{
+    color: #0056b3;
+}
+.unlike-button{
+    padding: 0;
+    border: none;
+    background-color: #1a172a;
+    color: #007bff;
+}
+.unlike-button:hover{
+    color: #0056b3;
+}
