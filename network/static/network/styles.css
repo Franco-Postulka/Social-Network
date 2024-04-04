@@ -20,14 +20,18 @@ body{
     min-height: 60px;
 }
 
-#submit{
-    font-size: 20px;
+#average_button{
+    font-size: 18px;
     color: white;
     background-color: blue;
     border: 1px solid blue;
     border-radius: 10%;
+    outline: none;
 }
-
+#average_button:hover{
+    background-color: rgb(33, 33, 134);
+    border: 1px solid rgb(33, 33, 134);
+}
 .post{
     padding: 15px;
     border: 1px solid white;
@@ -62,18 +66,6 @@ a:hover{
 #username{
     font-size: 35px;
     margin: 0 auto;
-}
-#follow_buttom{
-    font-size: 18px;
-    color: white;
-    background-color: blue;
-    border: 1px solid blue;
-    border-radius: 10%;
-    outline: none;
-}
-#follow_buttom:hover{
-    background-color: rgb(33, 33, 134);
-    border: 1px solid rgb(33, 33, 134);
 }
 
 .step-links{

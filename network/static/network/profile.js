@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded',function(){
-    const  buttom = document.querySelector('#follow_buttom')
+    const  buttom = document.querySelector('#average_button')
     const logged_user = document.querySelector('#hidden-element').innerHTML
     let username = document.querySelector('#username').innerHTML
     username = username.slice(1,username.length)

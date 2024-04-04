@@ -98,7 +98,13 @@ def profile(request, username):
     paginator = Paginator(posts,10)
     page_number = request.GET.get('page') 
     posts = paginator.get_page(page_number)
-    return render(request, "network/profile.html", {'username':user,'followers':followers,'following':follwing,'posts':posts, 'logged_user':request.user})
+
+    logged_user = request.user
+    if request.user.is_authenticated:
+        liked_post_ids = Post.objects.filter(likes=logged_user).values_list('id', flat=True)
+    else:
+        liked_post_ids = []
+    return render(request, "network/profile.html", {'username':user,'followers':followers,'following':follwing,'posts':posts, 'logged_user':request.user,'liked_post_ids':liked_post_ids})
 
 
 
@@ -110,12 +116,18 @@ def following(request):
 
         for following_profile in following_profiles:
             following_users.append(following_profile.user)
-
         posts = Post.objects.filter(user__in=following_users).order_by('-date')
         paginator = Paginator(posts,10)
         page_number = request.GET.get('page') 
         posts = paginator.get_page(page_number)
-        return render(request,'network/following.html',{'posts':posts,'logged_user':request.user})
+
+        logged_user = request.user
+        if request.user.is_authenticated:
+            liked_post_ids = Post.objects.filter(likes=logged_user).values_list('id', flat=True)
+        else:
+            liked_post_ids = []
+            
+        return render(request,'network/following.html',{'posts':posts,'logged_user':logged_user,'liked_post_ids':liked_post_ids})
     else:
         return HttpResponseRedirect(reverse('login'))
     
