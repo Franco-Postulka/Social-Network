@@ -11,7 +11,6 @@ from .models import User, Post, Profile
 
 
 def index(request):
-    print(request.user.pk)
     posts = Post.objects.all().order_by('-date')
     paginator = Paginator(posts,10)
     page_number = request.GET.get('page') 
